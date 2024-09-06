@@ -20,14 +20,14 @@ const Navbar = () => {
     <NavLink
       to={item.to}
       className={({ isActive }) =>
-        `${isActive ? "text-green-500" : "text-black"} font-medium`
+        `${isActive ? "text-green-500" : "text-white"} font-medium`
       }
     >
       {item.name}
     </NavLink>
   ));
   return (
-    <nav className="bg-[#E3F2AC] border-gray-200 dark:bg-gray-900">
+    <nav className="bg-[#557C56] border-gray-200 dark:bg-gray-900">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link
           to={"/"}
@@ -39,12 +39,12 @@ const Navbar = () => {
         {/* for mobile */}
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="outline" size="icon" className="md:hidden">
-              <MenuIcon className="h-6 w-6 text-[#b6de24]" />
+            <Button variant="secondary" size="icon" className="md:hidden">
+              <MenuIcon className="h-6 w-6 text-[#557C56]" />
               <span className="sr-only">Toggle navigation menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="left">
+          <SheetContent side="left" className="bg-[#557C56]">
             <div className="grid w-[200px] p-4">{navlinks}</div>
           </SheetContent>
         </Sheet>

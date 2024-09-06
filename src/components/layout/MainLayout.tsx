@@ -1,10 +1,12 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../Navbar";
+import HeroSection from "../HeroSection";
 
 const MainLayout = () => {
   return (
-    <div>
+    <div className="font-popins">
       <Navbar/>
+      <HeroSection/>
       <Outlet />
     </div>
   );

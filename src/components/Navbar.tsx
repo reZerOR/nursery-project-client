@@ -16,8 +16,9 @@ const menu = [
 ];
 
 const Navbar = () => {
-  const navlinks = menu.map((item) => (
+  const navlinks = menu.map((item, idx) => (
     <NavLink
+      key={idx}
       to={item.to}
       className={({ isActive }) =>
         `${isActive ? "text-green-500" : "text-white"} font-medium`

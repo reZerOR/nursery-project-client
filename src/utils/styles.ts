@@ -1,1 +1,1 @@
-export const containerStyle = "container xl:mx-auto px-4 xl:px-0"
+export const containerStyle = "container mx-auto px-4 xl:px-0"

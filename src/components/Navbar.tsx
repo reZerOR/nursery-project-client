@@ -44,7 +44,7 @@ const Navbar = () => {
               <span className="sr-only">Toggle navigation menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="bg-[#557C56]">
+          <SheetContent side="left" className="bg-primary1 font-popins">
             <div className="grid w-[200px] p-4">{navlinks}</div>
           </SheetContent>
         </Sheet>

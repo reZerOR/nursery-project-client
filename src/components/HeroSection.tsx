@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import BlurIn from "./BlurIn";
+import BlurIn from "./megicUi/BlurIn";
 import { Link } from "react-router-dom";
 const word = ["Bring Your Nursery", "to Life", "with Our Plants"];
 

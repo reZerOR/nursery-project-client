@@ -1,0 +1,1 @@
+export const containerStyle = "container xl:mx-auto px-4 xl:px-0"

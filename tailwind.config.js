@@ -9,7 +9,11 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      container: {
+        'custom': 'container lg:mx-auto px-4 lg:px-0',
+      },
       colors: {
+        primary1: '#557C56',
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

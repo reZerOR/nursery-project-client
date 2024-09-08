@@ -1,16 +1,31 @@
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
-import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 export default function ProductForm() {
   return (
-    <Card className="max-w-2xl mx-auto p-6 sm:p-8 md:p-10">
+    <Card className="max-w-2xl border-none shadow-none my-20 mx-auto p-6 sm:p-8 md:p-10">
       <CardHeader>
-        <CardTitle className="text-3xl font-bold">Add New Product</CardTitle>
-        <CardDescription>Fill out the details for your new product.</CardDescription>
+        <CardTitle className="text-3xl font-semibold">Add New <span className="font-libre text-primary1">Plant</span></CardTitle>
+        <CardDescription>
+          Fill out the details for your new <span className="font-libre font-semibold text-primary1">Plant</span>.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form className="grid gap-6">
@@ -20,22 +35,41 @@ export default function ProductForm() {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="description">Description</Label>
-            <Textarea id="description" rows={4} placeholder="Describe your product" />
+            <Textarea
+              id="description"
+              rows={4}
+              placeholder="Describe your product"
+            />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
               <Label htmlFor="rating">Rating (1-5)</Label>
-              <Input id="rating" type="number" min="1" max="5" placeholder="4.5" />
+              <Input
+                id="rating"
+                type="number"
+                min="1"
+                max="5"
+                placeholder="4.5"
+              />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="image-url">Image URL</Label>
-              <Input id="image-url" placeholder="https://example.com/product.jpg" />
+              <Input
+                id="image-url"
+                placeholder="https://example.com/product.jpg"
+              />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
               <Label htmlFor="price">Price</Label>
-              <Input id="price" type="number" min="0" step="0.01" placeholder="19.99" />
+              <Input
+                id="price"
+                type="number"
+                min="0"
+                step="0.01"
+                placeholder="19.99"
+              />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="quantity">Quantity</Label>
@@ -44,7 +78,7 @@ export default function ProductForm() {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="category">Category</Label>
-            <Select >
+            <Select>
               <SelectTrigger>
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
@@ -61,9 +95,11 @@ export default function ProductForm() {
       </CardContent>
       <CardFooter>
         <div className="flex justify-end">
-          <Button>Save Product</Button>
+          <Button className="bg-primary1 hover:bg-primary1/90">
+            Add Plant
+          </Button>
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }

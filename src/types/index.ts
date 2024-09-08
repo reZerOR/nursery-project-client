@@ -10,3 +10,13 @@ export type Product = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type TPlantData = {
+  title: string;
+  description: string;
+  rating: number;
+  imageUrl: string;
+  price: number;
+  quantity: number;
+  category: string;
+};

@@ -20,36 +20,15 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { useAddProductMutation } from "@/redux/features/product/productApi";
 import { toast } from "sonner";
-
-type FormData = {
-  title: string;
-  description: string;
-  rating: number;
-  imageUrl: string;
-  price: number;
-  quantity: number;
-  category: string;
-};
-
-const category = [
-  "Flowering Plants",
-  "Indoor Plants",
-  "Fruit Trees",
-  "Herbs & Medicinal Plants",
-  "Ornamental Plants",
-  "Vegetable Plants",
-  "Shrubs & Bushes",
-  "Climbers & Creepers",
-  "Aquatic Plants",
-  "Seeds & Bulbs",
-];
+import { TPlantData } from "@/types";
+import { useGetAllCategoryQuery } from "@/redux/features/category/categoryApi";
 
 export default function ProductForm() {
-  const { register, handleSubmit, setValue, reset } = useForm<FormData>();
-  const [addProduct] =
-    useAddProductMutation();
+  const { register, handleSubmit, setValue, reset } = useForm<TPlantData>();
+  const [addProduct] = useAddProductMutation();
+  const { data: category, isLoading } = useGetAllCategoryQuery(undefined);
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: TPlantData) => {
     const loading = toast.loading("Plant adding", { duration: 2000 });
     try {
       await addProduct(data).unwrap();
@@ -160,9 +139,9 @@ export default function ProductForm() {
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                {category.map((item) => (
-                  <SelectItem key={item} value={item}>
-                    {item}
+                {category?.data.map((item) => (
+                  <SelectItem key={item._id} value={item.title}>
+                    {item.title}
                   </SelectItem>
                 ))}
               </SelectContent>

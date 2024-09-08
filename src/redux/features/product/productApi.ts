@@ -20,12 +20,15 @@ type GetAllProductsResponse = {
   message: string;
   data: Product[];
 };
-
+type Queries = {
+  search?: string
+}
 const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllProducts: builder.query<GetAllProductsResponse, void>({
-      query: () => {
-        return { url: "/product", method: "GET" };
+    getAllProducts: builder.query<GetAllProductsResponse, Queries>({
+      query: ({search}) => {
+        const searchQuery = search ? `?searchTerm=${search}` : "";
+        return { url: `/product${searchQuery}`, method: "GET" };
       },
       providesTags: ["products"],
     }),

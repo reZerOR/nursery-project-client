@@ -1,4 +1,5 @@
 import App from "@/App";
+import AddProduct from "@/pages/AddProduct";
 import Home from "@/pages/Home";
 import { createBrowserRouter } from "react-router-dom";
 
@@ -10,6 +11,10 @@ import { createBrowserRouter } from "react-router-dom";
         {
           path:"/",
           element: <Home/>
+        },
+        {
+          path:"add-product",
+          element: <AddProduct/>
         }
       ]
     },

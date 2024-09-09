@@ -13,6 +13,7 @@ import {
 } from "./ui/select";
 import { useGetAllCategoryQuery } from "@/redux/features/category/categoryApi";
 import PlanPagination from "./PlanPagination";
+import { useSearchParams } from "react-router-dom";
 
 const sortOptions = [
   { value: "default", label: "Default" },
@@ -21,10 +22,18 @@ const sortOptions = [
 ];
 
 const ProductHolder = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchParams, SetSearchParams] = useSearchParams();
+
+  const [searchTerm, setSearchTerm] = useState(
+    searchParams.get("search") || ""
+  );
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [selectedSort, setSelectedSort] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>(
+    searchParams.get("category") || ""
+  );
+  const [selectedSort, setSelectedSort] = useState<string>(
+    searchParams.get("sort") || ""
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(2);
 
@@ -38,6 +47,24 @@ const ProductHolder = () => {
     };
   }, [searchTerm]);
 
+  //updating params when the input changes
+  const updateQueryParams = ({
+    search,
+    category,
+    sort,
+  }: {
+    search?: string;
+    category?: string;
+    sort?: string;
+  }) => {
+    const params: Record<string, string> = {};
+    if (search) params.search = search;
+    if (category && category !== "All") params.category = category;
+    if (sort) params.sort = sort;
+
+    SetSearchParams(params);
+  };
+
   const { data: product, isLoading } = useGetAllProductsQuery({
     search: debouncedSearch,
     category: selectedCategory,
@@ -48,7 +75,13 @@ const ProductHolder = () => {
   // const { data: categories } = useGetAllCategoryQuery(undefined);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+    const value = e.target.value;
+    setSearchTerm(value);
+    updateQueryParams({
+      search: value,
+      category: selectedCategory,
+      sort: selectedSort,
+    });
   };
 
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -74,7 +107,17 @@ const ProductHolder = () => {
           onChange={handleInputChange}
         />
         <div className="w-full flex flex-col sm:flex-row gap-5">
-          <Select onValueChange={(value) => setSelectedCategory(value)}>
+          <Select
+            onValueChange={(value) => {
+              setSelectedCategory(value);
+              updateQueryParams({
+                search: searchTerm,
+                category: value,
+                sort: selectedSort,
+              });
+            }}
+            value={selectedCategory}
+          >
             <SelectTrigger className="w-full sm:max-w-xs">
               <SelectValue placeholder="Select category" />
             </SelectTrigger>
@@ -88,7 +131,17 @@ const ProductHolder = () => {
             </SelectContent>
           </Select>
 
-          <Select onValueChange={(value) => setSelectedSort(value)}>
+          <Select
+            onValueChange={(value) => {
+              setSelectedSort(value);
+              updateQueryParams({
+                search: searchTerm,
+                category: selectedCategory,
+                sort: value,
+              });
+            }}
+            value={selectedSort}
+          >
             <SelectTrigger className="w-full sm:max-w-xs">
               <SelectValue placeholder="Sort by Price" />
             </SelectTrigger>
@@ -107,17 +160,21 @@ const ProductHolder = () => {
       >
         {isLoading ? (
           <p>Loading...</p>
+        ) : product?.data.length === 0 ? (
+          <p>There no Plants</p>
         ) : (
           currentProducts?.map((item: Product) => (
             <ProuductCard key={item._id} product={item} />
           ))
         )}
       </div>
-      <PlanPagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        handlePageChange={handlePageChange}
-      />
+      {product?.data.length !== 0 && (
+        <PlanPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          handlePageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };

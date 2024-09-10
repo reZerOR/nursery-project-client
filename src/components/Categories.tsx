@@ -11,6 +11,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { MoveLeft, MoveRight } from "lucide-react";
 import Heading from "./Heading";
+import { Link } from "react-router-dom";
 
 const Categories = () => {
   const { data: categories } = useGetAllCategoryQuery(undefined);
@@ -39,7 +40,7 @@ const Categories = () => {
   }, [api]);
   return (
     <div>
-      <Heading text="Shop by Category"/>
+      <Heading text="Shop by Category" />
       <div className={`${containerStyle}`}>
         <Carousel
           setApi={setApi}
@@ -63,9 +64,12 @@ const Categories = () => {
                       height={100}
                       className="w-full h-24 object-cover rounded-sm"
                     />
-                    <h3 className="font-medium text-sm mt-2 text-center">
+                    <Link
+                      to={`/products?category=${category.title}`}
+                      className="font-medium flex justify-center text-sm mt-2"
+                    >
                       {category.title}
-                    </h3>
+                    </Link>
                   </CardContent>
                 </Card>
               </CarouselItem>

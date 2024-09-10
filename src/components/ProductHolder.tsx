@@ -25,6 +25,9 @@ const sortOptions = [
 const ProductHolder = () => {
   const [searchParams, SetSearchParams] = useSearchParams();
 
+  console.log(decodeURIComponent(searchParams.get('category') as string));
+  
+
   const [searchTerm, setSearchTerm] = useState(
     searchParams.get("search") || ""
   );

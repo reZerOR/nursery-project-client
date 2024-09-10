@@ -65,7 +65,7 @@ const Categories = () => {
                       className="w-full h-24 object-cover rounded-sm"
                     />
                     <Link
-                      to={`/products?category=${category.title}`}
+                      to={`/products?category=${encodeURIComponent(category.title)}`}
                       className="font-medium flex justify-center text-sm mt-2"
                     >
                       {category.title}

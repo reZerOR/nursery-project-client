@@ -14,6 +14,7 @@ import {
 import { useGetAllCategoryQuery } from "@/redux/features/category/categoryApi";
 import PlanPagination from "./PlanPagination";
 import { useSearchParams } from "react-router-dom";
+import Heading from "./Heading";
 
 const sortOptions = [
   { value: "default", label: "Default" },
@@ -35,7 +36,7 @@ const ProductHolder = () => {
     searchParams.get("sort") || ""
   );
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(2);
+  const [productsPerPage] = useState(10);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -98,6 +99,7 @@ const ProductHolder = () => {
 
   return (
     <div className={`${containerStyle}`}>
+      <Heading text="Our Plants"/>
       <div className="mb-5 flex md:flex-row flex-col gap-5">
         <Input
           type="text"

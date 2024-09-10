@@ -7,6 +7,7 @@ import img5 from '@/assets/masaaki-komori-NoXUQ54pDac-unsplash.jpg'
 import img6 from '@/assets/saffu-Ct1Mx5OTn9A-unsplash.jpg'
 import img7 from '@/assets/rita-ox-eH5gAM2X2wQ-unsplash.jpg'
 import { containerStyle } from "@/utils/styles";
+import Heading from "./Heading";
 
 
 
@@ -15,9 +16,7 @@ const imageArray = [img, img5, img3, img4, img2, img6, img7]
 export function ImageGallery() {
   return (
     <>
-    <h1 className="font-libre text-center text-primary1 text-6xl font-bold mt-20 mb-16">
-    Garden Portraits
-    </h1>
+<Heading text="Garden Portraits"/>
     
     <section id="photos" className={containerStyle}>
       <div className="columns-2 gap-4 sm:columns-3">

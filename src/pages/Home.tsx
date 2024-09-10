@@ -1,3 +1,4 @@
+import Categories from "@/components/Categories";
 import HeroSection from "@/components/HeroSection";
 import { ImageGallery } from "@/components/ImageGallery";
 import ProductHolder from "@/components/ProductHolder";
@@ -8,6 +9,7 @@ const Home = () => {
       <HeroSection />
       <ImageGallery />
       <ProductHolder />
+      <Categories/>
     </div>
   );
 };

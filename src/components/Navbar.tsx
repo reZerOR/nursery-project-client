@@ -2,7 +2,8 @@ import { Link, NavLink } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Button } from "./ui/button";
-import { MenuIcon } from "lucide-react";
+import { MenuIcon, ShoppingCart } from "lucide-react";
+import { useAppSelector } from "@/redux/hooks";
 
 const menu = [
   {
@@ -16,6 +17,7 @@ const menu = [
 ];
 
 const Navbar = () => {
+  const cart = useAppSelector((state) => state.cart.products);
   const navlinks = menu.map((item, idx) => (
     <NavLink
       key={idx}
@@ -38,21 +40,27 @@ const Navbar = () => {
         </Link>
 
         {/* for mobile */}
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="secondary" size="icon" className="md:hidden">
-              <MenuIcon className="h-6 w-6 text-[#557C56]" />
-              <span className="sr-only">Toggle navigation menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="bg-primary1 font-popins">
-            <div className="grid w-[200px] p-4">{navlinks}</div>
-          </SheetContent>
-        </Sheet>
 
         {/* for bigger screen */}
-        <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-          <div className="flex gap-6 font-medium">{navlinks}</div>
+        <div className="flex items-center gap-6" id="navbar-default">
+          <div className="md:flex hidden gap-6 font-medium">{navlinks}</div>
+          <div className="relative">
+            <ShoppingCart className="text-white" size={28} />
+            <p className="absolute -right-2 top-[15px] px-[8px] py-[3px] text-sm bg-red-600 text-white rounded-full">
+              {cart.length}
+            </p>
+          </div>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="secondary" size="icon" className="md:hidden">
+                <MenuIcon className="h-6 w-6 text-[#557C56]" />
+                <span className="sr-only">Toggle navigation menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="bg-primary1 font-popins">
+              <div className="grid w-[200px] p-4">{navlinks}</div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </nav>

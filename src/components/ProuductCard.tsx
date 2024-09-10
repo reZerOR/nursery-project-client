@@ -2,9 +2,24 @@ import { ShoppingCart, StarIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { Product } from "@/types";
+import { useAppDispatch } from "@/redux/hooks";
+import { addCart, TCartProduct } from "@/redux/features/cart/cartSlice";
 
 const ProuductCard = ({ product }: { product: Product }) => {
-  const { imageUrl, rating, quantity, price, category, title } = product;
+  const { imageUrl, rating, _id, quantity, price, category, title } = product;
+  const dispatch = useAppDispatch()
+  const handleCart=()=>{
+    const cartData: TCartProduct ={
+      _id,
+      title,
+      price,
+      category,
+      imageUrl,
+      availableQuantity: quantity,
+    }
+
+    dispatch(addCart(cartData))
+  }
   return (
     <Card className="max-w-sm overflow-hidden rounded-lg shadow-lg">
       <div className="relative">
@@ -33,6 +48,7 @@ const ProuductCard = ({ product }: { product: Product }) => {
         </div>
         <Button
           disabled={quantity === 0}
+          onClick={handleCart}
           className="w-full mt-4 flex items-center gap-2 bg-primary1 hover:bg-primary1/90"
         >
           {quantity > 0 ? (

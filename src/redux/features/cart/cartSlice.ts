@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface TCartProduct {
+export interface TCartProduct {
   _id: string;
   title: string;
   price: number;
   imageUrl: string;
   category: string;
   availableQuantity: number; // Max quantity available for this product
-  quantity: number; // Quantity in cart
+  quantity?: number; // Quantity in cart
 }
 
 interface TCart {
@@ -23,7 +23,7 @@ const initialState: TCart = {
 // calculate the total of products
 const recalculateTotal = (products: TCartProduct[]) => {
   return products.reduce(
-    (acc, product) => acc + product.price * product.quantity,
+    (acc, product) => acc + product.price * product.quantity!,
     0
   );
 };
@@ -38,8 +38,8 @@ export const cartSlice = createSlice({
 
       if (existingProduct) {
         // If product exists and hasn't reached available quantity, increase quantity
-        if (existingProduct.quantity < existingProduct.availableQuantity) {
-          existingProduct.quantity += 1;
+        if (existingProduct.quantity! < existingProduct.availableQuantity) {
+          existingProduct.quantity! += 1;
         }
       } else {
         // If product doesn't exist, add to cart with quantity 1, but ensure available quantity is >= 1
@@ -67,13 +67,13 @@ export const cartSlice = createSlice({
       if (productToUpdate) {
         if (type === "inc") {
           // Increase quantity by 1, but not beyond availableQuantity
-          if (productToUpdate.quantity < productToUpdate.availableQuantity) {
-            productToUpdate.quantity += 1;
+          if (productToUpdate.quantity! < productToUpdate.availableQuantity) {
+            productToUpdate.quantity! += 1;
           }
         } else if (type === "dec") {
           // Decrease quantity by 1, but ensure it doesn't go below 1
-          if (productToUpdate.quantity > 1) {
-            productToUpdate.quantity -= 1;
+          if (productToUpdate.quantity! > 1) {
+            productToUpdate.quantity! -= 1;
           }
         }
       }

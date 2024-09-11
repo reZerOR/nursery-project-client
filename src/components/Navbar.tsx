@@ -44,12 +44,12 @@ const Navbar = () => {
         {/* for bigger screen */}
         <div className="flex items-center gap-6" id="navbar-default">
           <div className="md:flex hidden gap-6 font-medium">{navlinks}</div>
-          <div className="relative">
+          <Link to={'/cart'} className="relative">
             <ShoppingCart className="text-white" size={28} />
             <p className="absolute -right-2 top-[15px] px-[8px] py-[3px] text-sm bg-red-600 text-white rounded-full">
               {cart.length}
             </p>
-          </div>
+          </Link>
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="secondary" size="icon" className="md:hidden">

@@ -60,7 +60,7 @@ export default function CheckoutForm() {
     });
   
     if (quantitiesAdjusted) {
-      toast("Some product quantities in your cart have been adjusted due to availability.", {
+      toast.info("Some product quantities in your cart have been adjusted due to availability.", {
         description: "Please review your cart before proceeding.",
         duration: 5000, // Set duration to 5 seconds
       });

@@ -5,9 +5,11 @@ import { containerStyle } from "@/utils/styles";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { deleteProduct, updateCart } from "@/redux/features/cart/cartSlice";
 import Heading from "@/components/Heading";
+import { useNavigate } from "react-router-dom";
 
 export default function CartPage() {
   const cart = useAppSelector((state) => state.cart);
+  const navigate = useNavigate()
   const dispatch = useAppDispatch();
 
   return (
@@ -66,7 +68,7 @@ export default function CartPage() {
         <div className="text-2xl font-semibold">
           Total: ${cart.total.toFixed(2)}
         </div>
-        <Button size="lg" className="px-8 bg-primary1 hover:bg-primary1/80">
+        <Button onClick={()=> navigate('/checkout')} size="lg" className="px-8 bg-primary1 hover:bg-primary1/80">
           <ShoppingCart className="mr-2 h-5 w-5" /> Checkout
         </Button>
       </div>

@@ -1,11 +1,18 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { containerStyle } from "@/utils/styles";
+import { useAppSelector } from "@/redux/hooks";
+import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
+import { clearCart, updateCart } from "@/redux/features/cart/cartSlice";
+import { TOrder, useAddOrderMutation } from "@/redux/features/Order/orderApi";
+import { toast } from "sonner";
 
 interface CheckoutFormInputs {
   name: string;
@@ -13,6 +20,7 @@ interface CheckoutFormInputs {
   email: string;
   street: string;
   city: string;
+  state: string;
   postalCode: string;
   country: string;
 }
@@ -24,14 +32,88 @@ export default function CheckoutForm() {
     formState: { errors },
   } = useForm<CheckoutFormInputs>();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [addOrder] = useAddOrderMutation();
+  const { data: productsData } = useGetAllProductsQuery({});
+  const cartProducts = useAppSelector((state) => state.cart);
 
   const onSubmit: SubmitHandler<CheckoutFormInputs> = async (data) => {
     setIsSubmitting(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log(data);
-    setIsSubmitting(false);
-    // Here you would typically send the data to your server
+  
+    // Check and adjust cart quantities
+    let quantitiesAdjusted = false;
+    cartProducts.products.forEach((cartProduct) => {
+      const actualProduct = productsData?.data.find(
+        (p) => p._id === cartProduct._id
+      );
+      if (actualProduct && cartProduct.quantity! > actualProduct.quantity) {
+        dispatch(
+          updateCart({
+            productId: cartProduct._id,
+            type: "set",
+            quantity: actualProduct.quantity,
+          })
+        );
+        quantitiesAdjusted = true;
+      }
+    });
+  
+    if (quantitiesAdjusted) {
+      toast("Some product quantities in your cart have been adjusted due to availability.", {
+        description: "Please review your cart before proceeding.",
+        duration: 5000, // Set duration to 5 seconds
+      });
+      setIsSubmitting(false);
+      return navigate("/cart");
+    }
+  
+    const orderData: TOrder = {
+      customerName: data.name,
+      customerEmail: data.email,
+      customerPhone: data.phoneNumber,
+      shippingAddress: {
+        street: data.street,
+        city: data.city,
+        postalCode: data.postalCode,
+        country: data.country,
+        state: data.state,
+      },
+      items: cartProducts.products.map((product) => ({
+        product: product._id,
+        quantity: product.quantity!,
+        price: product.price,
+      })),
+      totalAmount: cartProducts.total,
+      paymentMethod: "Cash on Delivery",
+    };
+  
+    try {
+      // Add order
+      const result = await addOrder(orderData).unwrap();
+  
+      if (result.success) {
+        // Clear the cart
+        dispatch(clearCart());
+  
+        toast.success("Order placed successfully!", {
+          description: "Thank you for your purchase.",
+          duration: 4000, // Set duration to 4 seconds
+        });
+  
+        // Navigate to home page
+        navigate("/");
+      } else {
+        toast.error("Failed to place order. Please try again.", {
+          duration: 4000, // Set duration to 4 seconds
+        });
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
+      toast.error("An error occurred while placing your order. Please try again.", {
+        duration: 5000, // Set duration to 5 seconds
+      });
+    }
   };
 
   return (
@@ -57,7 +139,7 @@ export default function CheckoutForm() {
             <div className="space-y-2">
               <Label htmlFor="phoneNumber">Phone Number</Label>
               <Input
-                type="number"
+                type="text"
                 id="phoneNumber"
                 {...register("phoneNumber", {
                   required: "Phone number is required",
@@ -104,7 +186,7 @@ export default function CheckoutForm() {
                 <Input
                   id="city"
                   {...register("city", { required: "City is required" })}
-                  placeholder="Dhaka"
+                  placeholder="New York"
                 />
                 {errors.city && (
                   <p className="text-sm text-red-500">{errors.city.message}</p>
@@ -112,14 +194,27 @@ export default function CheckoutForm() {
               </div>
 
               <div className="space-y-2">
+                <Label htmlFor="state">State</Label>
+                <Input
+                  id="state"
+                  {...register("state", { required: "State is required" })}
+                  placeholder="NY"
+                />
+                {errors.state && (
+                  <p className="text-sm text-red-500">{errors.state.message}</p>
+                )}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
                 <Label htmlFor="postalCode">Postal Code</Label>
                 <Input
-                  type="number"
                   id="postalCode"
                   {...register("postalCode", {
                     required: "Postal code is required",
                   })}
-                  placeholder="4000"
+                  placeholder="10001"
                 />
                 {errors.postalCode && (
                   <p className="text-sm text-red-500">
@@ -127,18 +222,20 @@ export default function CheckoutForm() {
                   </p>
                 )}
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="country">Country</Label>
-              <Input
-                id="country"
-                {...register("country", { required: "Country is required" })}
-                placeholder="Bangladesh"
-              />
-              {errors.country && (
-                <p className="text-sm text-red-500">{errors.country.message}</p>
-              )}
+              <div className="space-y-2">
+                <Label htmlFor="country">Country</Label>
+                <Input
+                  id="country"
+                  {...register("country", { required: "Country is required" })}
+                  placeholder="United States"
+                />
+                {errors.country && (
+                  <p className="text-sm text-red-500">
+                    {errors.country.message}
+                  </p>
+                )}
+              </div>
             </div>
 
             <div className="space-y-2">

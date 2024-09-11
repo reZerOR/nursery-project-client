@@ -59,9 +59,13 @@ export const cartSlice = createSlice({
     },
     updateCart: (
       state,
-      action: PayloadAction<{ productId: string; type: "inc" | "dec" }>
+      action: PayloadAction<{
+        productId: string;
+        type: "inc" | "dec" | "set";
+        quantity?: number;
+      }>
     ) => {
-      const { productId, type } = action.payload;
+      const { productId, type, quantity } = action.payload;
       const productToUpdate = state.products.find((p) => p._id === productId);
 
       if (productToUpdate) {
@@ -75,6 +79,11 @@ export const cartSlice = createSlice({
           if (productToUpdate.quantity! > 1) {
             productToUpdate.quantity! -= 1;
           }
+        } else if (type === "set" && quantity !== undefined) {
+          productToUpdate.quantity = Math.min(
+            quantity,
+            productToUpdate.availableQuantity
+          );
         }
       }
 

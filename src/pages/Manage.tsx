@@ -1,4 +1,3 @@
-'use client'
 
 import { useState } from 'react'
 import { MoreHorizontal, Pencil, Trash } from 'lucide-react'
@@ -17,7 +16,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 
-export default function Component() {
+export default function Manage() {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
   const [itemToDelete, setItemToDelete] = useState(null)
 

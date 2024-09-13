@@ -6,24 +6,18 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
-import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
-import ManageAlert from "./ManageAlert";
+import { useGetAllCategoryQuery } from "@/redux/features/category/categoryApi";
 import { useState } from "react";
+import ManageAlert from "./ManageAlert";
 import { ActionMenu } from "./ManageAction";
 
-const headingTitle = [
-  "Image",
-  "Title",
-  "Category",
-  "Price",
-  "Quantity",
-  "Action",
-];
+const categoryHeadings = ["Image", "Title", "Action"];
 
-const ManageProducts = () => {
-  const { data: products } = useGetAllProductsQuery({});
+const ManageCategory = () => {
+  const { data: categories } = useGetAllCategoryQuery(undefined);
+
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const handleUpdate = () => {
     return;
@@ -31,43 +25,39 @@ const ManageProducts = () => {
 
   const handleDelete = () => {
     // Perform the deletion logic here
-    console.log("Deleting product:", selectedProduct);
+    console.log("Deleting category:", selectedCategory);
     setDeleteConfirmOpen(false);
   };
 
   const confirmDelete = (id: string) => {
-    setSelectedProduct(id);
+    setSelectedCategory(id);
     setDeleteConfirmOpen(true);
   };
-
   return (
     <>
       <Table>
         <TableHeader>
           <TableRow>
-            {headingTitle.map((item) => (
+            {categoryHeadings.map((item) => (
               <TableHead key={item}>{item}</TableHead>
             ))}
           </TableRow>
         </TableHeader>
         <TableBody>
-          {products?.data.map((product) => (
-            <TableRow key={product._id}>
+          {categories?.data.map((category) => (
+            <TableRow key={category._id}>
               <TableCell>
                 <img
-                  src={product.imageUrl}
-                  alt={product.title}
+                  src={category.imgUrl}
+                  alt={category.title}
                   className="w-10 h-10 object-cover rounded"
                 />
               </TableCell>
-              <TableCell>{product.title}</TableCell>
-              <TableCell>{product.category}</TableCell>
-              <TableCell>${product.price.toFixed(2)}</TableCell>
-              <TableCell>{product.quantity}</TableCell>
+              <TableCell>{category.title}</TableCell>
               <TableCell>
                 <ActionMenu
                   handleUpdate={handleUpdate}
-                  handleDelete={() => confirmDelete(product._id)}
+                  handleDelete={() => confirmDelete(category._id)}
                 />
               </TableCell>
             </TableRow>
@@ -83,4 +73,4 @@ const ManageProducts = () => {
   );
 };
 
-export default ManageProducts;
+export default ManageCategory;

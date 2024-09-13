@@ -21,15 +21,15 @@ type GetAllProductsResponse = {
   data: Product[];
 };
 type Queries = {
-  search?: string
-  category?: string,
-  sort?: string
-  page?: number
-}
+  search?: string;
+  category?: string;
+  sort?: string;
+  page?: number;
+};
 const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllProducts: builder.query<GetAllProductsResponse, Queries>({
-      query: ({search, category, sort, page=1}) => {
+      query: ({ search, category, sort, page = 1 }) => {
         const params = new URLSearchParams();
         console.log(category);
         if (search && search.trim() !== "") params.append("searchTerm", search);
@@ -47,7 +47,14 @@ const productApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["products"],
     }),
+
+    deleteProduct: builder.mutation({
+      query: (id: string) => {
+        return { url: `/product/${id}`, method: "DELETE" };
+      },
+      invalidatesTags: ["products"],
+    }),
   }),
 });
 
-export const { useGetAllProductsQuery, useAddProductMutation,  } = productApi;
+export const { useGetAllProductsQuery, useAddProductMutation } = productApi;

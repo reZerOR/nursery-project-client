@@ -1,10 +1,21 @@
-
-import { useState } from 'react'
-import { MoreHorizontal, Pencil, Trash } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useState } from "react";
+import { MoreHorizontal, Pencil, Trash } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,92 +25,73 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
+import ManageProducts from "@/components/ManageProducts";
+
+type TActionMenu = {
+  handleUpdate: ()=> void,
+  handleDelete: ()=>void
+}
+export const ActionMenu = ({ handleUpdate, handleDelete }: TActionMenu) => (
+  <DropdownMenu>
+    <DropdownMenuTrigger asChild>
+      <Button variant="ghost" className="h-8 w-8 p-0">
+        <MoreHorizontal className="h-4 w-4" />
+      </Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent align="end">
+      <DropdownMenuItem onClick={() => handleUpdate()}>
+        <Pencil className="mr-2 h-4 w-4" />
+        Update
+      </DropdownMenuItem>
+      <DropdownMenuItem onClick={() => handleDelete()}>
+        <Trash className="mr-2 h-4 w-4" />
+        Delete
+      </DropdownMenuItem>
+    </DropdownMenuContent>
+  </DropdownMenu>
+);
 
 export default function Manage() {
-  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
-  const [itemToDelete, setItemToDelete] = useState(null)
-
-  const products = [
-    { id: 1, img: '/placeholder.svg', title: 'Product 1', category: 'Category A', price: 19.99, quantity: 100 },
-    { id: 2, img: '/placeholder.svg', title: 'Product 2', category: 'Category B', price: 29.99, quantity: 50 },
-    { id: 3, img: '/placeholder.svg', title: 'Product 3', category: 'Category A', price: 39.99, quantity: 75 },
-  ]
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
   const categories = [
-    { id: 1, img: '/placeholder.svg', title: 'Category A' },
-    { id: 2, img: '/placeholder.svg', title: 'Category B' },
-    { id: 3, img: '/placeholder.svg', title: 'Category C' },
-  ]
+    { id: 1, img: "/placeholder.svg", title: "Category A" },
+    { id: 2, img: "/placeholder.svg", title: "Category B" },
+    { id: 3, img: "/placeholder.svg", title: "Category C" },
+  ];
 
-  const handleDelete = (item) => {
-    setItemToDelete(item)
-    setDeleteConfirmOpen(true)
-  }
+  // const handleDelete = (item) => {
+  //   setItemToDelete(item)
+  //   setDeleteConfirmOpen(true)
+  // }
 
-  const confirmDelete = () => {
-    // Implement delete logic here
-    console.log('Deleting item:', itemToDelete)
-    setDeleteConfirmOpen(false)
-    setItemToDelete(null)
-  }
-
-  const ActionMenu = ({ item, type }) => (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-8 w-8 p-0">
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => console.log('Update', item)}>
-          <Pencil className="mr-2 h-4 w-4" />
-          Update
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleDelete(item)}>
-          <Trash className="mr-2 h-4 w-4" />
-          Delete
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
+  // const confirmDelete = () => {
+  //   // Implement delete logic here
+  //   console.log("Deleting item:", itemToDelete);
+  //   setDeleteConfirmOpen(false);
+  //   setItemToDelete(null);
+  // };
 
   return (
     <div className="container mx-auto py-10">
-      <Tabs defaultValue="products">
-        <TabsList>
-          <TabsTrigger value="products">Products</TabsTrigger>
-          <TabsTrigger value="categories">Categories</TabsTrigger>
+      <Tabs defaultValue="products" className="font-popins">
+        <TabsList className="">
+          <TabsTrigger
+            className="data-[state=active]:bg-primary1 data-[state=active]:text-white"
+            value="products"
+          >
+            Products
+          </TabsTrigger>
+          <TabsTrigger
+            className="data-[state=active]:bg-primary1 data-[state=active]:text-white"
+            value="categories"
+          >
+            Categories
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="products">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Image</TableHead>
-                <TableHead>Title</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Price</TableHead>
-                <TableHead>Quantity</TableHead>
-                <TableHead>Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {products.map((product) => (
-                <TableRow key={product.id}>
-                  <TableCell>
-                    <img src={product.img} alt={product.title} className="w-10 h-10 object-cover rounded" />
-                  </TableCell>
-                  <TableCell>{product.title}</TableCell>
-                  <TableCell>{product.category}</TableCell>
-                  <TableCell>${product.price.toFixed(2)}</TableCell>
-                  <TableCell>{product.quantity}</TableCell>
-                  <TableCell>
-                    <ActionMenu item={product} type="product" />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <ManageProducts />
         </TabsContent>
         <TabsContent value="categories">
           <Table>
@@ -114,7 +106,11 @@ export default function Manage() {
               {categories.map((category) => (
                 <TableRow key={category.id}>
                   <TableCell>
-                    <img src={category.img} alt={category.title} className="w-10 h-10 object-cover rounded" />
+                    <img
+                      src={category.img}
+                      alt={category.title}
+                      className="w-10 h-10 object-cover rounded"
+                    />
                   </TableCell>
                   <TableCell>{category.title}</TableCell>
                   <TableCell>
@@ -130,17 +126,22 @@ export default function Manage() {
       <AlertDialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure you want to delete this item?</AlertDialogTitle>
+            <AlertDialogTitle>
+              Are you sure you want to delete this item?
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the item from our servers.
+              This action cannot be undone. This will permanently delete the
+              item from our servers.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDelete}>Delete</AlertDialogAction>
+            <AlertDialogAction onClick={confirmDelete}>
+              Delete
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     </div>
-  )
+  );
 }

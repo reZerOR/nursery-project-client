@@ -18,6 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
+import { useAddCategoryMutation } from "@/redux/features/category/categoryApi";
 
 type FormData = {
   title: string;
@@ -26,6 +27,7 @@ type FormData = {
 
 export default function AddCategory() {
   const [isOpen, setIsOpen] = useState(false);
+  const [addCategory] = useAddCategoryMutation()
 
   const form = useForm<FormData>({
     defaultValues: {
@@ -44,9 +46,14 @@ export default function AddCategory() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Add Category</Button>
+        <Button
+          className="border-primary1 text-primary1 hover:bg-primary1 hover:text-white mb-2"
+          variant="outline"
+        >
+          Add Category
+        </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px]j">
         <DialogHeader>
           <DialogTitle>Add New Category</DialogTitle>
           <DialogDescription>
@@ -91,7 +98,7 @@ export default function AddCategory() {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button className="bg-primary1 hover:bg-primary1/90" type="submit">Submit</Button>
           </form>
         </Form>
       </DialogContent>

@@ -7,12 +7,17 @@ type TCategoryData = {
   createdAt: string;
   updatedAt: string;
 };
-
-type GetAllProductsResponse = {
+type TCommonResponse = {
   success: boolean;
   message: string;
-  data: TCategoryData[];
 };
+
+interface GetAllProductsResponse extends TCommonResponse {
+  data: TCategoryData[];
+}
+interface AddCategoryResponse extends TCommonResponse {
+  data: TCategoryData;
+}
 
 const categoryApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -21,6 +26,15 @@ const categoryApi = baseApi.injectEndpoints({
         return { url: "/category", method: "GET" };
       },
       providesTags: ["category"],
+    }),
+
+    addCategory: builder.mutation<
+      AddCategoryResponse,
+      { title: string; imageUrl: string }
+    >({
+      query: (data) => {
+        return { url: "/category", method: "POST", body: data };
+      },
     }),
 
     deleteCategory: builder.mutation({
@@ -32,4 +46,5 @@ const categoryApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAllCategoryQuery, useDeleteCategoryMutation } = categoryApi;
+export const { useGetAllCategoryQuery, useDeleteCategoryMutation, useAddCategoryMutation } =
+  categoryApi;

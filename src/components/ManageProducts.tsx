@@ -6,10 +6,14 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
-import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
+import {
+  useDeleteProductMutation,
+  useGetAllProductsQuery,
+} from "@/redux/features/product/productApi";
 import ManageAlert from "./ManageAlert";
 import { useState } from "react";
 import { ActionMenu } from "./ManageAction";
+import { toast } from "sonner";
 
 const headingTitle = [
   "Image",
@@ -22,6 +26,7 @@ const headingTitle = [
 
 const ManageProducts = () => {
   const { data: products } = useGetAllProductsQuery({});
+  const [deleteProduct] = useDeleteProductMutation();
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState("");
 
@@ -29,10 +34,22 @@ const ManageProducts = () => {
     return;
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     // Perform the deletion logic here
-    console.log("Deleting product:", selectedProduct);
-    setDeleteConfirmOpen(false);
+    try {
+      const result = await deleteProduct(selectedProduct);
+      if (result?.data) {
+        toast.success("Succesfully deleted product", { duration: 2000 });
+      }
+    } catch (e) {
+      console.error(e);
+
+      toast.error("Something went wrong", {
+        duration: 2000,
+      });
+    } finally {
+      setDeleteConfirmOpen(false);
+    }
   };
 
   const confirmDelete = (id: string) => {

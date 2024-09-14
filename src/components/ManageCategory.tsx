@@ -10,6 +10,7 @@ import { useGetAllCategoryQuery } from "@/redux/features/category/categoryApi";
 import { useState } from "react";
 import ManageAlert from "./ManageAlert";
 import { ActionMenu } from "./ManageAction";
+import AddCategory from "./AddCategory";
 
 const categoryHeadings = ["Image", "Title", "Action"];
 
@@ -35,6 +36,9 @@ const ManageCategory = () => {
   };
   return (
     <>
+    <div className="flex justify-end pr-2 md:pr-0">
+    <AddCategory />
+    </div>
       <Table>
         <TableHeader>
           <TableRow>

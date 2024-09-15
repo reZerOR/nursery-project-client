@@ -28,13 +28,13 @@ const headingTitle = [
 
 const ManageProducts = () => {
   const { data: products } = useGetAllProductsQuery({});
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [deleteProduct] = useDeleteProductMutation();
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState("");
 
-  const handleUpdate = () => {
-    return;
+  const handleUpdate = (id: string) => {
+    navigate(`/update-product/${id}`);
   };
 
   const handleDelete = async () => {
@@ -63,7 +63,13 @@ const ManageProducts = () => {
   return (
     <>
       <div className="flex justify-end pr-2 md:pr-0">
-        <Button onClick={()=> navigate("/add-product")} variant={'outline'} className="border-primary1 text-primary1 hover:bg-primary1 hover:text-white mb-2">Add Product</Button>
+        <Button
+          onClick={() => navigate("/add-product")}
+          variant={"outline"}
+          className="border-primary1 text-primary1 hover:bg-primary1 hover:text-white mb-2"
+        >
+          Add Product
+        </Button>
       </div>
       <Table>
         <TableHeader>
@@ -89,7 +95,7 @@ const ManageProducts = () => {
               <TableCell>{product.quantity}</TableCell>
               <TableCell>
                 <ActionMenu
-                  handleUpdate={handleUpdate}
+                  handleUpdate={() => handleUpdate(product._id)}
                   handleDelete={() => confirmDelete(product._id)}
                 />
               </TableCell>

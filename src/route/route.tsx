@@ -5,6 +5,7 @@ import CheckoutForm from "@/pages/Checkout";
 import Home from "@/pages/Home";
 import Manage from "@/pages/Manage";
 import Products from "@/pages/Products";
+import UpdateProduct from "@/pages/UpdateProduct";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
@@ -24,6 +25,11 @@ export const router = createBrowserRouter([
         path: "products",
         element: <Products />,
       },
+      {
+        path: "update-product/:id",
+        element: <UpdateProduct />,
+      },
+      
       {
         path: "cart",
         element: <CartPage />,

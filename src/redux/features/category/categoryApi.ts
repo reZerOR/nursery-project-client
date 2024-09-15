@@ -1,6 +1,6 @@
 import { baseApi } from "@/redux/api/baseApi";
 
-type TCategoryData = {
+export type TCategoryData = {
   _id: string;
   title: string;
   imgUrl: string;

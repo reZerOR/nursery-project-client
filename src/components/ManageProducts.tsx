@@ -14,6 +14,8 @@ import ManageAlert from "./ManageAlert";
 import { useState } from "react";
 import { ActionMenu } from "./ManageAction";
 import { toast } from "sonner";
+import { Button } from "./ui/button";
+import { useNavigate } from "react-router-dom";
 
 const headingTitle = [
   "Image",
@@ -26,6 +28,7 @@ const headingTitle = [
 
 const ManageProducts = () => {
   const { data: products } = useGetAllProductsQuery({});
+  const navigate = useNavigate()
   const [deleteProduct] = useDeleteProductMutation();
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState("");
@@ -59,6 +62,9 @@ const ManageProducts = () => {
 
   return (
     <>
+      <div className="flex justify-end pr-2 md:pr-0">
+        <Button onClick={()=> navigate("/add-product")} variant={'outline'} className="border-primary1 text-primary1 hover:bg-primary1 hover:text-white mb-2">Add Product</Button>
+      </div>
       <Table>
         <TableHeader>
           <TableRow>

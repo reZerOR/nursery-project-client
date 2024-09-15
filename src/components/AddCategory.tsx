@@ -19,28 +19,43 @@ import {
   FormMessage,
 } from "./ui/form";
 import { useAddCategoryMutation } from "@/redux/features/category/categoryApi";
+import { toast } from "sonner";
 
 type FormData = {
   title: string;
-  imageUrl: string;
+  imgUrl: string;
 };
 
 export default function AddCategory() {
   const [isOpen, setIsOpen] = useState(false);
-  const [addCategory] = useAddCategoryMutation()
+  const [addCategory] = useAddCategoryMutation();
 
   const form = useForm<FormData>({
     defaultValues: {
       title: "",
-      imageUrl: "",
+      imgUrl: "",
     },
   });
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     // Here you would typically handle the form submission
-    console.log("Submitted:", data);
-    setIsOpen(false);
-    form.reset();
+    try {
+      const result = await addCategory(data);
+      console.log(result.error);
+      
+      if (result.data?.data) {
+        toast.success("Succesfully added a category", { duration: 2000 });
+      }
+    } catch (error) {
+        toast.error("Something went wrong, please try again!", {
+          duration: 2000,
+        });
+      console.error(error);
+    } finally {
+      console.log("Submitted:", data);
+      setIsOpen(false);
+      form.reset();
+    }
   };
 
   return (
@@ -78,7 +93,7 @@ export default function AddCategory() {
             />
             <FormField
               control={form.control}
-              name="imageUrl"
+              name="imgUrl"
               rules={{
                 required: "Image URL is required",
                 pattern: {
@@ -98,7 +113,9 @@ export default function AddCategory() {
                 </FormItem>
               )}
             />
-            <Button className="bg-primary1 hover:bg-primary1/90" type="submit">Submit</Button>
+            <Button className="bg-primary1 hover:bg-primary1/90" type="submit">
+              Submit
+            </Button>
           </form>
         </Form>
       </DialogContent>

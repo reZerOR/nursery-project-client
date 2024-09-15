@@ -30,14 +30,15 @@ const categoryApi = baseApi.injectEndpoints({
 
     addCategory: builder.mutation<
       AddCategoryResponse,
-      { title: string; imageUrl: string }
+      { title: string; imgUrl: string }
     >({
       query: (data) => {
         return { url: "/category", method: "POST", body: data };
       },
+      invalidatesTags: ["category"],
     }),
 
-    deleteCategory: builder.mutation({
+    deleteCategory: builder.mutation<AddCategoryResponse, string>({
       query: (id: string) => {
         return { url: `/category/${id}`, method: "DELETE" };
       },
@@ -46,5 +47,8 @@ const categoryApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAllCategoryQuery, useDeleteCategoryMutation, useAddCategoryMutation } =
-  categoryApi;
+export const {
+  useGetAllCategoryQuery,
+  useDeleteCategoryMutation,
+  useAddCategoryMutation,
+} = categoryApi;

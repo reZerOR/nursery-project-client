@@ -38,7 +38,7 @@ const ManageProducts = () => {
     // Perform the deletion logic here
     try {
       const result = await deleteProduct(selectedProduct);
-      if (result?.data) {
+      if (result?.data?.data) {
         toast.success("Succesfully deleted product", { duration: 2000 });
       }
     } catch (e) {

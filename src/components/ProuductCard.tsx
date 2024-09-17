@@ -4,6 +4,7 @@ import { Card, CardContent } from "./ui/card";
 import { Product } from "@/types";
 import { useAppDispatch } from "@/redux/hooks";
 import { addCart, TCartProduct } from "@/redux/features/cart/cartSlice";
+import { Link } from "react-router-dom";
 
 const ProuductCard = ({ product }: { product: Product }) => {
   const { imageUrl, rating, _id, quantity, price, category, title } = product;
@@ -38,7 +39,7 @@ const ProuductCard = ({ product }: { product: Product }) => {
       <CardContent className="p-4 space-y-2 bg-[#e6f4ea]">
         <div className="flex items-center justify-between">
           <div className="">
-            <h3 className="text-lg font-medium">{title}</h3>
+            <Link to={`/products/${_id}`} className="text-lg font-medium">{title}</Link>
             <p className="text-sm text-muted-foreground">{category}</p>
           </div>
         </div>

@@ -1,47 +1,101 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useGetAllCategoryQuery } from "@/redux/features/category/categoryApi";
-import { useAddProductMutation } from "@/redux/features/product/productApi";
+import { useGetAProductQuery } from "@/redux/features/product/productApi";
 import { TPlantData } from "@/types";
+import { buttonStyle } from "@/utils/styles";
 import { Select } from "@radix-ui/react-select";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 const UpdateProduct = () => {
-  const { register, handleSubmit, setValue, reset } = useForm<TPlantData>();
-  const [addProduct] = useAddProductMutation();
+  const { id } = useParams();
+  const { data: product } = useGetAProductQuery({ id: id! });
   const { data: category, isLoading } = useGetAllCategoryQuery(undefined);
 
-  const onSubmit = async (data: TPlantData) => {
-    const loading = toast.loading("Plant adding", { duration: 2000 });
-    try {
-      await addProduct(data).unwrap();
-      toast.success(`Plan is succesfully added`, {
-        id: loading,
-        duration: 2000,
-      });
-      reset();
-    } catch (e) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      toast.error(`${(e as any).data.message}`, {
-        id: loading,
-        duration: 2000,
-      });
-      console.error(e);
+  const { register, handleSubmit, setValue, reset, watch } =
+    useForm<TPlantData>();
+
+  // Set form default values when product data is fetched
+  useEffect(() => {
+    if (product?.data && category) {
+      const productData = product.data;
+      setValue("title", productData.title);
+      setValue("description", productData.description);
+      setValue("rating", productData.rating);
+      setValue("imageUrl", productData.imageUrl);
+      setValue("price", productData.price);
+      setValue("quantity", productData.quantity);
+      setValue("category", productData.category);
     }
+  }, [product, setValue, category]);
+
+  const selectedCategory = watch("category");
+
+  const onSubmit = async (data: TPlantData) => {
+    console.log(data);
+
+    const isSameData =
+      data.title === product?.data.title &&
+      data.description === product?.data.description &&
+      data.rating === product?.data.rating &&
+      data.imageUrl === product?.data.imageUrl &&
+      data.price === product?.data.price &&
+      data.quantity === product?.data.quantity &&
+      data.category === product?.data.category;
+
+    if (isSameData) {
+      toast.warning("You didn't change anything!", {
+        duration: 2000,
+      });
+      return;
+    }
+
+    console.log(data);
+    const loading = toast.loading("Plant adding", { duration: 2000 });
+
+    // try {
+    //   await addProduct(data).unwrap();
+    //   toast.success(`Plan is succesfully added`, {
+    //     id: loading,
+    //     duration: 2000,
+    //   });
+    //   reset();
+    // } catch (e) {
+    //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    //   toast.error(`${(e as any).data.message}`, {
+    //     id: loading,
+    //     duration: 2000,
+    //   });
+    //   console.error(e);
+    // }
   };
   return (
     <Card className="max-w-2xl border-none shadow-none my-20 mx-auto p-6 sm:p-8 md:p-10">
       <CardHeader>
         <CardTitle className="text-3xl font-semibold">
-          Add New <span className="font-libre text-primary1">Plant</span>
+          Update This <span className="font-libre text-primary1">Plant</span>
         </CardTitle>
         <CardDescription>
-          Fill out the details for your new{" "}
+          Modify the details to udpate the{" "}
           <span className="font-libre font-semibold text-primary1">Plant</span>.
         </CardDescription>
       </CardHeader>
@@ -122,7 +176,10 @@ const UpdateProduct = () => {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="category">Category</Label>
-            <Select onValueChange={(value) => setValue("category", value)}>
+            <Select
+              value={selectedCategory}
+              onValueChange={(value) => setValue("category", value)}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
@@ -142,9 +199,9 @@ const UpdateProduct = () => {
           <Button
             form="form"
             type="submit"
-            className="bg-primary1 hover:bg-primary1/90"
+            className={buttonStyle}
           >
-            Add Plant
+            Update
           </Button>
         </div>
       </CardFooter>

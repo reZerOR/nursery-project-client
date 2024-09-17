@@ -24,7 +24,7 @@ type GetAllProductsResponse = {
 type DeleteProductResponse = {
   success: boolean;
   message: string;
-  data: Product
+  data: Product;
 };
 
 type Queries = {
@@ -54,6 +54,11 @@ const productApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["products"],
     }),
+    getAProduct: builder.query<DeleteProductResponse, { id: string }>({
+      query: ({ id }) => {
+        return { url: `/product/${id}`, method: "GET" };
+      },
+    }),
 
     deleteProduct: builder.mutation<DeleteProductResponse, string>({
       query: (id: string) => {
@@ -64,4 +69,9 @@ const productApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAllProductsQuery, useAddProductMutation, useDeleteProductMutation } = productApi;
+export const {
+  useGetAllProductsQuery,
+  useAddProductMutation,
+  useDeleteProductMutation,
+  useGetAProductQuery,
+} = productApi;

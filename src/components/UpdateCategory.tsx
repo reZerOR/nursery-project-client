@@ -17,6 +17,7 @@ import {
   useUpdateCategoryMutation,
 } from "@/redux/features/category/categoryApi";
 import { useEffect } from "react";
+import { buttonStyle } from "@/utils/styles";
 
 type FormData = {
   title: string;
@@ -126,7 +127,7 @@ export default function UpdateCategoryDialog({
           </div>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <Button type="submit">Update Category</Button>
+            <Button className={buttonStyle} type="submit">Update</Button>
           </AlertDialogFooter>
         </form>
       </AlertDialogContent>

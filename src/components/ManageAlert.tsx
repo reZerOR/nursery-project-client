@@ -9,6 +9,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "./ui/alert-dialog";
+import { buttonStyle } from "@/utils/styles";
 
 type TAlert = {
   deleteConfirmOpen: boolean;
@@ -38,7 +39,7 @@ function ManageAlert({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel
-            className="bg-primary1 text-white hover:bg-primary1/90 hover:text-white"
+            className={buttonStyle}
             onClick={() => setDeleteConfirmOpen(false)}
           >
             Cancel

@@ -19,6 +19,15 @@ interface AddCategoryResponse extends TCommonResponse {
   data: TCategoryData;
 }
 
+type TBody = {
+  title : string,
+  imgUrl: string
+}
+
+type TUpdate = {
+  id: string,
+  body: TBody
+}
 const categoryApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllCategory: builder.query<GetAllProductsResponse, void>({
@@ -30,10 +39,20 @@ const categoryApi = baseApi.injectEndpoints({
 
     addCategory: builder.mutation<
       AddCategoryResponse,
-      { title: string; imgUrl: string }
+      TBody
     >({
       query: (data) => {
         return { url: "/category", method: "POST", body: data };
+      },
+      invalidatesTags: ["category"],
+    }),
+
+    updateCategory: builder.mutation<
+      AddCategoryResponse,
+      TUpdate
+    >({
+      query: ({id, body}) => {
+        return { url: `/category/${id}`, method: "PUT", body: body };
       },
       invalidatesTags: ["category"],
     }),
@@ -51,4 +70,5 @@ export const {
   useGetAllCategoryQuery,
   useDeleteCategoryMutation,
   useAddCategoryMutation,
+  useUpdateCategoryMutation
 } = categoryApi;

@@ -17,7 +17,7 @@ import UpdateCategoryDialog from "./UpdateCategory";
 const categoryHeadings = ["Image", "Title", "Action"];
 
 const ManageCategory = () => {
-  const { data: categories, refetch } = useGetAllCategoryQuery(undefined);
+  const { data: categories } = useGetAllCategoryQuery(undefined);
   const [deleteCategory] = useDeleteCategoryMutation()
 
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
@@ -97,7 +97,6 @@ const ManageCategory = () => {
         onOpenChange={setUpdateDialogOpen}
         onSuccess={() => {
           setACategory(null)
-          refetch()
         }}
       />
     </>

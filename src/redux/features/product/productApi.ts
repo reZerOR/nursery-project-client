@@ -14,6 +14,16 @@ type Product = {
   updatedAt: string;
 };
 
+type TUpdateProduct = {
+  title: string;
+  description: string;
+  price: number;
+  quantity: number;
+  category: string;
+  imageUrl: string;
+  rating: number;
+};
+
 // The API response type
 type GetAllProductsResponse = {
   success: boolean;
@@ -59,6 +69,14 @@ const productApi = baseApi.injectEndpoints({
         return { url: `/product/${id}`, method: "GET" };
       },
     }),
+    updateProduct: builder.mutation<
+      DeleteProductResponse,
+      { id: string; body: TUpdateProduct }
+    >({
+      query: ({ id, body }) => {
+        return { url: `/product/${id}`, method: "PUT", body: body };
+      },
+    }),
 
     deleteProduct: builder.mutation<DeleteProductResponse, string>({
       query: (id: string) => {
@@ -74,4 +92,5 @@ export const {
   useAddProductMutation,
   useDeleteProductMutation,
   useGetAProductQuery,
+  useUpdateProductMutation
 } = productApi;

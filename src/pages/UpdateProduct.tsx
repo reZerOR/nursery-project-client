@@ -17,7 +17,10 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useGetAllCategoryQuery } from "@/redux/features/category/categoryApi";
-import { useGetAProductQuery } from "@/redux/features/product/productApi";
+import {
+  useGetAProductQuery,
+  useUpdateProductMutation,
+} from "@/redux/features/product/productApi";
 import { TPlantData } from "@/types";
 import { buttonStyle } from "@/utils/styles";
 import { Select } from "@radix-ui/react-select";
@@ -29,7 +32,8 @@ import { toast } from "sonner";
 const UpdateProduct = () => {
   const { id } = useParams();
   const { data: product } = useGetAProductQuery({ id: id! });
-  const { data: category, isLoading } = useGetAllCategoryQuery(undefined);
+  const { data: category} = useGetAllCategoryQuery(undefined);
+  const [updateProduct] = useUpdateProductMutation();
 
   const { register, handleSubmit, setValue, reset, watch } =
     useForm<TPlantData>();
@@ -72,21 +76,26 @@ const UpdateProduct = () => {
     console.log(data);
     const loading = toast.loading("Plant adding", { duration: 2000 });
 
-    // try {
-    //   await addProduct(data).unwrap();
-    //   toast.success(`Plan is succesfully added`, {
-    //     id: loading,
-    //     duration: 2000,
-    //   });
-    //   reset();
-    // } catch (e) {
-    //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    //   toast.error(`${(e as any).data.message}`, {
-    //     id: loading,
-    //     duration: 2000,
-    //   });
-    //   console.error(e);
-    // }
+    try {
+      const result = await updateProduct({
+        id: product!.data._id,
+        body: data,
+      }).unwrap();
+      if (result.data) {
+        toast.success(`Plan is succesfully added`, {
+          id: loading,
+          duration: 2000,
+        });
+        reset();
+      }
+    } catch (e) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      toast.error(`${(e as any).data.message}`, {
+        id: loading,
+        duration: 2000,
+      });
+      console.error(e);
+    }
   };
   return (
     <Card className="max-w-2xl border-none shadow-none my-20 mx-auto p-6 sm:p-8 md:p-10">
@@ -196,11 +205,7 @@ const UpdateProduct = () => {
       </CardContent>
       <CardFooter>
         <div className="flex justify-end">
-          <Button
-            form="form"
-            type="submit"
-            className={buttonStyle}
-          >
+          <Button form="form" type="submit" className={buttonStyle}>
             Update
           </Button>
         </div>

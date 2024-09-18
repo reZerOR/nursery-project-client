@@ -8,21 +8,21 @@ import { Link } from "react-router-dom";
 
 const ProuductCard = ({ product }: { product: Product }) => {
   const { imageUrl, rating, _id, quantity, price, category, title } = product;
-  const dispatch = useAppDispatch()
-  const handleCart=()=>{
-    const cartData: TCartProduct ={
+  const dispatch = useAppDispatch();
+  const handleCart = () => {
+    const cartData: TCartProduct = {
       _id,
       title,
       price,
       category,
       imageUrl,
       availableQuantity: quantity,
-    }
+    };
 
-    dispatch(addCart(cartData))
-  }
+    dispatch(addCart(cartData));
+  };
   return (
-    <Card className="max-w-sm overflow-hidden rounded-lg shadow-lg">
+    <Card className="max-w-sm flex flex-col h-full overflow-hidden rounded-lg shadow-lg">
       <div className="relative">
         <img
           src={imageUrl}
@@ -36,10 +36,12 @@ const ProuductCard = ({ product }: { product: Product }) => {
           ${price}
         </div>
       </div>
-      <CardContent className="p-4 space-y-2 bg-[#e6f4ea]">
+      <CardContent className="flex flex-col justify-between flex-grow p-4 space-y-2 bg-[#e6f4ea]">
         <div className="flex items-center justify-between">
-          <div className="">
-            <Link to={`/products/${_id}`} className="text-lg font-medium">{title}</Link>
+          <div>
+            <Link to={`/products/${_id}`} className="text-lg font-medium">
+              {title}
+            </Link>
             <p className="text-sm text-muted-foreground">{category}</p>
           </div>
         </div>

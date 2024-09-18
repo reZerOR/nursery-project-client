@@ -4,11 +4,12 @@ import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface EmptyStateProps {
-  buttonText: string;
-  navigateTo: string;
+  buttonText?: string;
+  navigateTo?: string;
   title: string;
   description: string;
   IconComponent: React.ElementType;
+  ButtonComponent?: React.ElementType;
 }
 
 const NotFound = ({
@@ -16,7 +17,8 @@ const NotFound = ({
   navigateTo,
   title,
   description,
-  IconComponent, // Default icon component
+  IconComponent,
+  ButtonComponent, // Default icon component
 }: EmptyStateProps) => {
   const navigate = useNavigate();
   return (
@@ -30,12 +32,16 @@ const NotFound = ({
         <p className="text-muted-foreground text-sm max-w-lg mb-6">
           {description}
         </p>
-        <Button
-          onClick={() => navigate(navigateTo)}
-          className="flex items-center justify-center mx-auto gap-1"
-        >
-          {buttonText} <ArrowRight />
-        </Button>
+        {ButtonComponent ? (
+          <ButtonComponent />
+        ) : (
+          <Button
+            onClick={() => navigate(navigateTo!)}
+            className="flex items-center justify-center mx-auto gap-1"
+          >
+            {buttonText} <ArrowRight />
+          </Button>
+        )}
       </div>
     </div>
   );

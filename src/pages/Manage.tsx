@@ -1,10 +1,13 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ManageProducts from "@/components/ManageProducts";
 import ManageCategory from "@/components/ManageCategory";
+import Heading from "@/components/Heading";
+import { containerStyle } from "@/utils/styles";
 
 export default function Manage() {
   return (
-    <div className="container mx-auto py-10">
+    <div className={containerStyle}>
+      <Heading text="Manage Everything" />
       <Tabs defaultValue="products" className="font-popins">
         <TabsList className="">
           <TabsTrigger

@@ -4,7 +4,7 @@ import logo from "@/assets/logo.png";
 
 export default function Footer() {
   return (
-    <footer className="bg-muted py-8 sm:py-12">
+    <footer className="bg-muted mt-10 py-8 sm:py-12">
       <div className={`${containerStyle}`}>
         <div className="container grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col items-start gap-4">

@@ -12,6 +12,9 @@ export default function ProductDetail() {
   const { id } = useParams();
   const { data: product } = useGetAProductQuery({ id: id! });
   const dispatch = useAppDispatch();
+  if(!product?.data){
+    return null
+  }
   const { _id, title, price, category, imageUrl, quantity } =
     product?.data as Product;
   const handleCart = () => {

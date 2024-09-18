@@ -6,11 +6,25 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { deleteProduct, updateCart } from "@/redux/features/cart/cartSlice";
 import Heading from "@/components/Heading";
 import { useNavigate } from "react-router-dom";
+import NotFound from "@/components/NotFound";
 
 export default function CartPage() {
   const cart = useAppSelector((state) => state.cart);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  if (cart.products.length === 0) {
+    return (
+      <div className="h-[calc(100dvh-72px)] flex justify-center">
+        <NotFound
+          title="Your cart is currently empty!"
+          description="It seems like you haven't added any plants to your cart just yet. Explore our collection and bring home some green goodness!"
+          buttonText="Start Shopping"
+          navigateTo="/products"
+          IconComponent={ShoppingCart}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className={`${containerStyle} mb-20`}>
@@ -68,7 +82,11 @@ export default function CartPage() {
         <div className="text-2xl font-semibold">
           Total: ${cart.total.toFixed(2)}
         </div>
-        <Button onClick={()=> navigate('/checkout')} size="lg" className="px-8 bg-primary1 hover:bg-primary1/80">
+        <Button
+          onClick={() => navigate("/checkout")}
+          size="lg"
+          className="px-8 bg-primary1 hover:bg-primary1/80"
+        >
           <ShoppingCart className="mr-2 h-5 w-5" /> Checkout
         </Button>
       </div>

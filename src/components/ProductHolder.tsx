@@ -15,6 +15,8 @@ import { useGetAllCategoryQuery } from "@/redux/features/category/categoryApi";
 import PlanPagination from "./PlanPagination";
 import { useSearchParams } from "react-router-dom";
 import Heading from "./Heading";
+import { PackageX } from "lucide-react";
+import NotFound from "./NotFound";
 
 const sortOptions = [
   { value: "default", label: "Default" },
@@ -99,7 +101,7 @@ const ProductHolder = () => {
 
   return (
     <div className={`${containerStyle}`}>
-      <Heading text="Our Plants"/>
+      <Heading text="Our Plants" />
       <div className="mb-5 flex md:flex-row flex-col gap-5">
         <Input
           type="text"
@@ -157,13 +159,20 @@ const ProductHolder = () => {
           </Select>
         </div>
       </div>
+      {!isLoading && currentProducts?.length === 0 && (
+        <NotFound
+          navigateTo="/add-product"
+          buttonText="Add plant"
+          IconComponent={PackageX}
+          title="No plant found!"
+          description=" Please check back soon for fresh plants and new arrivals! or you can add plant."
+        />
+      )}
       <div
         className={`grid md:grid-cols-3 min-[480px]:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-3 max-[480px]:place-items-center lg:gap-5`}
       >
         {isLoading ? (
           <p>Loading...</p>
-        ) : product?.data.length === 0 ? (
-          <p>There no Plants</p>
         ) : (
           currentProducts?.map((item: Product) => (
             <ProuductCard key={item._id} product={item} />

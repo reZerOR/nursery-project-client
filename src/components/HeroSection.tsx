@@ -18,7 +18,7 @@ function HeroSection() {
         </div>
         <div className="flex justify-center">
           <Link
-            to={"#"}
+            to={"/products"}
             className="relative inline-flex items-center px-12 py-3 overflow-hidden text-lg font-semibold text-white border-2 border-white rounded-full hover:text-[#557C56] group hover:bg-gray-50"
           >
             <span className="absolute left-0 block w-full h-0 transition-all bg-white opacity-100 group-hover:h-full top-1/2 group-hover:top-0 duration-400 ease"></span>

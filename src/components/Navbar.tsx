@@ -23,14 +23,18 @@ const Navbar = () => {
       key={idx}
       to={item.to}
       className={({ isActive }) =>
-        `${isActive ? "text-green-500" : "text-white"} font-medium`
+        `${
+          isActive
+            ? "py-1 px-3 bg-white text-primary1 rounded-md"
+            : "text-white"
+        } font-medium`
       }
     >
       {item.name}
     </NavLink>
   ));
   return (
-    <nav className="bg-[#557C56] border-gray-200 dark:bg-gray-900">
+    <nav className="bg-primary1 border-gray-200">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link
           to={"/"}
@@ -43,8 +47,8 @@ const Navbar = () => {
 
         {/* for bigger screen */}
         <div className="flex items-center gap-6" id="navbar-default">
-          <div className="md:flex hidden gap-6 font-medium">{navlinks}</div>
-          <Link to={'/cart'} className="relative">
+          <div className="md:flex items-center hidden gap-6 font-medium">{navlinks}</div>
+          <Link to={"/cart"} className="relative">
             <ShoppingCart className="text-white" size={28} />
             <p className="absolute -right-2 top-[15px] px-[8px] py-[3px] text-sm bg-red-600 text-white rounded-full">
               {cart.length}

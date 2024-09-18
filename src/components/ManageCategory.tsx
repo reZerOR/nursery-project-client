@@ -32,8 +32,6 @@ const ManageCategory = () => {
   const [aCategory, setACategory] = useState<TCategoryData | null>(null);
 
   const handleUpdate = (category: TCategoryData) => {
-    console.log(category);
-
     setACategory(category);
     setUpdateDialogOpen(true);
   };

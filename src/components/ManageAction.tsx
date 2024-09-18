@@ -14,11 +14,11 @@ type TActionMenu = {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => handleUpdate()}>
+        <DropdownMenuItem className="text-primary1" onClick={() => handleUpdate()}>
           <Pencil className="mr-2 h-4 w-4" />
           Update
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleDelete()}>
+        <DropdownMenuItem className="text-red-600" onClick={() => handleDelete()}>
           <Trash className="mr-2 h-4 w-4" />
           Delete
         </DropdownMenuItem>

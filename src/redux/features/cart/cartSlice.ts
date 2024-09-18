@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { toast } from "sonner";
 
 export interface TCartProduct {
   _id: string;
@@ -40,11 +41,15 @@ export const cartSlice = createSlice({
         // If product exists and hasn't reached available quantity, increase quantity
         if (existingProduct.quantity! < existingProduct.availableQuantity) {
           existingProduct.quantity! += 1;
+          toast.success("Product quantity increased in cart", {
+            duration: 2000,
+          });
         }
       } else {
         // If product doesn't exist, add to cart with quantity 1, but ensure available quantity is >= 1
         if (product.availableQuantity > 0) {
           state.products.push({ ...product, quantity: 1 });
+          toast.success("Added to cart", { duration: 2000 });
         }
       }
 
@@ -54,8 +59,8 @@ export const cartSlice = createSlice({
       const productId = action.payload;
       // Remove the product
       state.products = state.products.filter((p) => p._id !== productId);
-
       state.total = recalculateTotal(state.products);
+      toast.error("Product remove from cart", {duration: 2000})
     },
     updateCart: (
       state,

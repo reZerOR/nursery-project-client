@@ -9,20 +9,22 @@ export default function Manage() {
     <div className={containerStyle}>
       <Heading text="Manage Everything" />
       <Tabs defaultValue="products" className="font-popins">
-        <TabsList className="">
-          <TabsTrigger
-            className="data-[state=active]:bg-primary1 data-[state=active]:text-white"
-            value="products"
-          >
-            Products
-          </TabsTrigger>
-          <TabsTrigger
-            className="data-[state=active]:bg-primary1 data-[state=active]:text-white"
-            value="categories"
-          >
-            Categories
-          </TabsTrigger>
-        </TabsList>
+        <div className="flex justify-center">
+          <TabsList className="">
+            <TabsTrigger
+              className="data-[state=active]:bg-primary1 data-[state=active]:text-white"
+              value="products"
+            >
+              Products
+            </TabsTrigger>
+            <TabsTrigger
+              className="data-[state=active]:bg-primary1 data-[state=active]:text-white"
+              value="categories"
+            >
+              Categories
+            </TabsTrigger>
+          </TabsList>
+        </div>
         <TabsContent value="products">
           <ManageProducts />
         </TabsContent>

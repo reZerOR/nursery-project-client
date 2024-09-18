@@ -6,8 +6,6 @@ import { useAppDispatch } from "@/redux/hooks";
 import { Product } from "@/types";
 import { ShoppingCart } from "lucide-react";
 import { useParams } from "react-router-dom";
-import { toast } from "sonner";
-
 export default function ProductDetail() {
   const { id } = useParams();
   const { data: product } = useGetAProductQuery({ id: id! });
@@ -28,7 +26,7 @@ export default function ProductDetail() {
     };
 
     dispatch(addCart(cartData));
-    toast.success("Added to cart", { duration: 2000 });
+
   };
   // Mock product data
 

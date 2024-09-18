@@ -16,6 +16,14 @@ import { ActionMenu } from "./ManageAction";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
+import UpdateProduct from "@/pages/UpdateProduct";
 
 const headingTitle = [
   "Image",
@@ -32,9 +40,14 @@ const ManageProducts = () => {
   const [deleteProduct] = useDeleteProductMutation();
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState("");
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(
+    null
+  );
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
   const handleUpdate = (id: string) => {
-    navigate(`/update-product/${id}`);
+    setSelectedProductId(id);
+    setIsUpdateModalOpen(true);
   };
 
   const handleDelete = async () => {
@@ -108,6 +121,22 @@ const ManageProducts = () => {
         deleteConfirmOpen={deleteConfirmOpen}
         setDeleteConfirmOpen={setDeleteConfirmOpen}
       />
+      <Dialog open={isUpdateModalOpen} onOpenChange={setIsUpdateModalOpen}>
+        <DialogContent className="max-w-xl rounded-xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Update Product</DialogTitle>
+            <DialogDescription>
+              Make changes to your product here. Click save when you're done.
+            </DialogDescription>
+          </DialogHeader>
+          {selectedProductId && (
+            <UpdateProduct
+              id={selectedProductId}
+              onClose={() => setIsUpdateModalOpen(false)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

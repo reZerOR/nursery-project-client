@@ -1,12 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -26,13 +19,16 @@ import { buttonStyle } from "@/utils/styles";
 import { Select } from "@radix-ui/react-select";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 
-const UpdateProduct = () => {
-  const { id } = useParams();
-  const { data: product } = useGetAProductQuery({ id: id! });
-  const { data: category} = useGetAllCategoryQuery(undefined);
+interface UpdateProductProps {
+  id: string;
+  onClose: () => void;
+}
+
+const UpdateProduct = ({ id, onClose }: UpdateProductProps) => {
+  const { data: product } = useGetAProductQuery({ id });
+  const { data: category } = useGetAllCategoryQuery(undefined);
   const [updateProduct] = useUpdateProductMutation();
 
   const { register, handleSubmit, setValue, reset, watch } =
@@ -87,6 +83,7 @@ const UpdateProduct = () => {
           duration: 2000,
         });
         reset();
+        onClose();
       }
     } catch (e) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -98,16 +95,7 @@ const UpdateProduct = () => {
     }
   };
   return (
-    <Card className="max-w-2xl border-none shadow-none my-20 mx-auto p-6 sm:p-8 md:p-10">
-      <CardHeader>
-        <CardTitle className="text-3xl font-semibold">
-          Update This <span className="font-libre text-primary1">Plant</span>
-        </CardTitle>
-        <CardDescription>
-          Modify the details to udpate the{" "}
-          <span className="font-libre font-semibold text-primary1">Plant</span>.
-        </CardDescription>
-      </CardHeader>
+    <Card className="border-none shadow-none">
       <CardContent>
         <form
           id="form"

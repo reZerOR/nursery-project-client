@@ -26,7 +26,7 @@ import { useGetAllCategoryQuery } from "@/redux/features/category/categoryApi";
 export default function ProductForm() {
   const { register, handleSubmit, setValue, reset } = useForm<TPlantData>();
   const [addProduct] = useAddProductMutation();
-  const { data: category, isLoading } = useGetAllCategoryQuery(undefined);
+  const { data: category} = useGetAllCategoryQuery(undefined);
 
   const onSubmit = async (data: TPlantData) => {
     const loading = toast.loading("Plant adding", { duration: 2000 });
